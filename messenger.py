@@ -18,9 +18,7 @@ server_data = {
         }
     ]
 }
-
-print('=== Messenger ===')
-while True:
+def Menu():
     print('MENU:')
     print('X. Leave')
     print("M. List of Users")
@@ -29,38 +27,39 @@ while True:
     print("---------")
     print("\n")
     if choice == 'm':
-        print('The users are: ') #[server_data['users'][i]['name']for i in range(len(server_data["users"]))])
-        for i in range(len(server_data["users"])):
-            print(server_data['users'][i]['name'])
-        print('---------')
+        Users()
     elif choice == 'x':
-        break
+        return "Bye"
     elif choice == 'g':
-            print('The channels are:')
-            for i in range(len(server_data["channels"])):
-                print("'",server_data['channels'][i]['name'],"'", " id: ", server_data['channels'][i]['id'])
-            print("----------")
-            while choice != 'x':
-                print("CHANNEL MENU:")
-                print("ENTER CHANNEL ID TO SEE MESSAGES:")
-                print('X. Leave')
-                for i in range(len(server_data["channels"])):
-                     print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
-                choice = input("Enter command: ").lower()
-                print("\n")
-                if choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
-                    c=0
-                    print("LIST OF MESSAGES:")
-                    for j in range(len(server_data['messages'])):
-                        if str(server_data['messages'][j]['channel']) == choice:
-                           c+=1
-                           print(c,'. ', server_data['messages'][j]['content'])
-                    print("---------")
-                elif choice == 'x':
-                    print("\n")
-                    break
-                else:
-                        print('Unknown option:', choice)
+        Channels()
     else:
         print('Unknown option:', choice)
-print('Bye')
+    Menu()
+def Users():
+    print('User Menu:')
+    print('x. Leave')
+    for i in range(len(server_data["users"])):
+        print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+    print('---------')
+    Menu()
+def Channels():
+    print("CHANNEL MENU:")
+    print("ENTER CHANNEL ID TO SEE MESSAGES:")
+    print('X. Leave')
+    for i in range(len(server_data["channels"])):
+        print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
+    choice = input("Enter command: ").lower()
+    print("\n")
+    if choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
+        print("LIST OF MESSAGES:")
+        for j in range(len(server_data['messages'])):
+            if str(server_data['messages'][j]['channel']) == choice:
+                print(server_data['messages'][j]['reception_date'],'. ', server_data['messages'][j]['content'])
+        print("---------")
+    elif choice == 'x':
+        return
+    else:
+            print('Unknown option:', choice)
+    Channels()
+print('=== Messenger ===')
+Menu()
