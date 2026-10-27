@@ -37,10 +37,12 @@ while True:
                 for i in range(len(server_data["channels"])):
                      print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
                 choice = input("Enter command: ")
-                if choice in [server_data["channels"][p]['id'] for p in range(len(server_data["channels"]))]:
-                    for j in range(server_data['messages']):
-                        if server_data['messages'][j]['channel'] == choice:
-                           print(server_data['messages'][j]['content'])
+                if choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
+                    c=0
+                    for j in range(len(server_data['messages'])):
+                        if str(server_data['messages'][j]['channel']) == choice:
+                           c+=1
+                           print(c,'. ', server_data['messages'][j]['content'])
                 elif choice == 'x':
                     break
     else:
