@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 
 server_data = {
     'users': [
@@ -18,6 +19,27 @@ server_data = {
         }
     ]
 }
+def power10(n):
+    c = 0
+    while n >=10:
+        n = n//10
+        c+=1
+    return c
+def UserId():
+    current_ids = [member["id"] for member in server_data["members"]]
+    if not current_ids:
+        return 0
+    max_id = max(current_ids)
+    interval = (max_id // 100) + 1
+
+    start = 100 * (interval - 1)
+    end = 100 * interval  re
+    possible_ids = [x for x in range(start, end) if x not in current_ids]
+    if not possible_ids:
+        start = end
+        end = start + 100
+        possible_ids = [x for x in range(start, end) if x not in current_ids]
+    return random.choice(possible_ids)
 def Menu():
     print('MENU:')
     print('X. Leave')
@@ -37,11 +59,23 @@ def Menu():
     Menu()
 def Users():
     print('User Menu:')
-    print('x. Leave')
-    for i in range(len(server_data["users"])):
-        print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+    print('X. Leave')
+    print('U: See current Users: ')
+    print('A: Add user:')
     print('---------')
-    Menu()
+    choice = input("Enter command: ").lower()
+    if choice == 'x':
+        return
+    elif choice == 'u':
+        for i in range(len(server_data["users"])):
+            print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+    elif choice == 'a':
+        name = input("Enter a name:")
+        id = UserId()
+        server_data['members']+= [{'name' : name, 'id' : id}]
+
+
+    Users()
 def Channels():
     print("CHANNEL MENU:")
     print("ENTER CHANNEL ID TO SEE MESSAGES:")
