@@ -26,14 +26,14 @@ def power10(n):
         c+=1
     return c
 def UserId():
-    current_ids = [member["id"] for member in server_data["members"]]
+    current_ids = [member["id"] for member in server_data["users"]]
     if not current_ids:
         return 0
     max_id = max(current_ids)
     interval = (max_id // 100) + 1
 
     start = 100 * (interval - 1)
-    end = 100 * interval  re
+    end = 100 * interval
     possible_ids = [x for x in range(start, end) if x not in current_ids]
     if not possible_ids:
         start = end
@@ -72,9 +72,7 @@ def Users():
     elif choice == 'a':
         name = input("Enter a name:")
         id = UserId()
-        server_data['members']+= [{'name' : name, 'id' : id}]
-
-
+        server_data['users']+= [{'name' : name, 'id' : id}]
     Users()
 def Channels():
     print("CHANNEL MENU:")
