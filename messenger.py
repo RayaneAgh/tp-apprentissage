@@ -20,13 +20,12 @@ server_data = {
 }
 
 print('=== Messenger ===')
-print('type in lowercase')
 while True:
     print('MENU:')
     print('X. Leave')
-    print("M. Users")
-    print("G. Groups")
-    choice = input('Select an option: ')
+    print("M. List of Users")
+    print("G. List of Channels")
+    choice = input('Select an option: ').lower()
     if choice == 'm':
         print('The users are: ') #[server_data['users'][i]['name']for i in range(len(server_data["users"]))])
         for i in range(len(server_data["users"])):
@@ -35,16 +34,17 @@ while True:
     elif choice == 'x':
         break
     elif choice == 'g':
+            print('The channels are:')
             for i in range(len(server_data["channels"])):
                 print("'",server_data['channels'][i]['name'],"'", " id: ", server_data['channels'][i]['id'])
             print("\n")
             while choice != 'x':
-                print("GROUP MENU:")
-                print("ENTER GROUP ID TO SEE MESSAGES:")
+                print("CHANNEL MENU:")
+                print("ENTER CHANNEL ID TO SEE MESSAGES:")
                 print('X. Leave')
                 for i in range(len(server_data["channels"])):
                      print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
-                choice = input("Enter command: ")
+                choice = input("Enter command: ").lower()
                 if choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
                     c=0
                     print("LIST OF MESSAGES:")
