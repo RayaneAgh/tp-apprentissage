@@ -1,10 +1,27 @@
 {
     "users": [
-        {"id": 41, "name": "Alice"},
-        {"id": 23, "name": "Bob"}
+        {
+            "id": 41,
+            "name": "Alice"
+        },
+        {
+            "id": 23,
+            "name": "Bob"
+        },
+        {
+            "name": "Perceval",
+            "id": 85
+        }
     ],
     "channels": [
-        {"id": 12, "name": "Town square", "member_ids": [41, 23]}
+        {
+            "id": 12,
+            "name": "Town square",
+            "member_ids": [
+                41,
+                23
+            ]
+        }
     ],
     "messages": [
         {

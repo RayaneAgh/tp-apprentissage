@@ -1,8 +1,12 @@
 from datetime import datetime
 import random
 import json
-with open('storage.json', 'r', encoding='utf-8') as f:
-    server_data = json.load(f)
+def load_server_data_from_file():
+    with open('storage.json', 'r', encoding='utf-8') as f:
+        return json.load(f)
+def save_server_data_to_file(data):
+    with open('storage.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
 def power10(n):
     c = 0
     while n >=10:
@@ -30,7 +34,22 @@ def findIndexById(List, Id):
         if List[i]['id'] != Id:
             c+=1
         else: return c
-
+def AddChannel():
+    print('')
+    name = input("Enter a name:")
+    id = Id(server_data['channels'])
+    server_data['channels']+= [{'name' : name, 'id' : id, "member_ids": []}]
+    print('')
+    print("You added ",id,". ", name, ' successfully.')
+    save_server_data_to_file(server_data)
+def AddUsers():
+    print("")
+    name = input("Enter a name:")
+    id = Id(server_data['users'])
+    print("")
+    server_data['users']+= [{'name' : name, 'id' : id}]
+    print("You added ",id,". ", name, ' successfully.')
+    save_server_data_to_file(server_data)
 def ChannelAddUsers():
     print("")
     choice = input('Choose channel id: ')
@@ -40,7 +59,7 @@ def ChannelAddUsers():
         User = input("Choose User Ids (only separated by commas): ")
         User = User.split(',')
         server_data['channels'][findIndexById(server_data['channels'], int(choice))]['member_ids'] += User
-        
+        save_server_data_to_file(server_data)
 def Menu():
     print('MENU:')
     print('X. Leave')
@@ -56,34 +75,35 @@ def Menu():
         Channels()
     else:
         print('Unknown option:', choice)
-    Menu()
+        Menu()
 def Users():
     print('')
     print('User Menu:')
     print('X. Leave')
+    print('R. Return to menu')
     print('U: See current Users: ')
     print('A: Add user:')
     print('')
     choice = input("Enter command: ").lower()
     if choice == 'x':
         return
+    elif choice == 'r':
+        Menu()
     elif choice == 'u':
         print("")
         for i in range(len(server_data["users"])):
             print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+        Users()
     elif choice == 'a':
-        print("")
-        name = input("Enter a name:")
-        id = Id(server_data['users'])
-        print("")
-        server_data['users']+= [{'name' : name, 'id' : id}]
-        print("You added ",id,". ", name, ' successfully.')
-    Users()
+        AddUsers()
+        Users()
 def Channels():
     print("")
     print("Channel menu:")
     print("Enter channel id to see messages:")
+    print()
     print('X. Leave')
+    print("R. Return to menu")
     print("A. Add channel")
     print("U. Add users in channel")
     for i in range(len(server_data["channels"])):
@@ -92,24 +112,25 @@ def Channels():
     choice = input("Enter command: ").lower()
 
     if choice == 'a':
-        print('')
-        name = input("Enter a name:")
-        id = Id(server_data['channels'])
-        server_data['channels']+= [{'name' : name, 'id' : id, "member_ids": []}]
-        print('')
-        print("You added ",id,". ", name, ' successfully.')
+        AddChannel()
+        Channels()
     elif choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
         print("List of messages:")
         print("")
         for j in range(len(server_data['messages'])):
             if str(server_data['messages'][j]['channel']) == choice:
                 print(server_data['messages'][j]['reception_date'],'. ', server_data['messages'][j]['content'])
+        Channels
     elif choice == "u":
         ChannelAddUsers()
+        Channels
     elif choice == 'x':
         return
+    elif choice == 'r':
+        Menu()
     else:
             print('Unknown option:', choice)
-    Channels()
+            Channels
+server_data = load_server_data_from_file()
 print('=== Messenger ===')
 Menu()
