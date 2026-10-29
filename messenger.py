@@ -1,24 +1,8 @@
 from datetime import datetime
 import random
-
-server_data = {
-    'users': [
-        {'id': 41, 'name': 'Alice'},
-        {'id': 23, 'name': 'Bob'}
-    ],
-    'channels': [
-        {'id': 12, 'name': 'Town square', 'member_ids': [41, 23]}
-    ],
-    'messages': [
-        {
-            'id': 18,
-            'reception_date': datetime.now(),
-            'sender_id': 41,
-            'channel': 12,
-            'content': 'Hi 👋'
-        }
-    ]
-}
+import json
+with open('storage.json', 'r', encoding='utf-8') as f:
+    server_data = json.load(f)
 def power10(n):
     c = 0
     while n >=10:
