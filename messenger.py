@@ -50,6 +50,24 @@ def AddUsers():
     server_data['users']+= [{'name' : name, 'id' : id}]
     print("You added ",id,". ", name, ' successfully.')
     save_server_data_to_file(server_data)
+def DeleteUsers():
+    print("I. See current Users: ")
+    print("R. return to User menu:")
+    Id = input("Enter ID:")
+    if Id.isdigit():
+        server_data['users'].pop(findIndexById(server_data['users'], int(Id)))
+        save_server_data_to_file(server_data)
+        Users()
+    elif Id.lower() == 'i':
+        ShowUsers()
+        DeleteUsers()
+    elif Id.lower() == 'r':
+        Users()
+
+def ShowUsers():
+    print("")
+    for i in range(len(server_data["users"])):
+        print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
 def ChannelAddUsers():
     print("")
     choice = input('Choose channel id: ')
@@ -60,7 +78,14 @@ def ChannelAddUsers():
         User = User.split(',')
         server_data['channels'][findIndexById(server_data['channels'], int(choice))]['member_ids'] += User
         save_server_data_to_file(server_data)
+def ShowMess(choice):
+    print("List of messages:")
+    print("")
+    for j in range(len(server_data['messages'])):
+        if str(server_data['messages'][j]['channel']) == choice:
+            print(server_data['messages'][j]['reception_date'],'. ',server_data['users'][findIndexById(server_data['users'], server_data['messages'][j]['sender_id'])]["name"],':  ', server_data['messages'][j]['content'])
 def Menu():
+    print()
     print('MENU:')
     print('X. Leave')
     print("M. List of Users")
@@ -81,8 +106,9 @@ def Users():
     print('User Menu:')
     print('X. Leave')
     print('R. Return to menu')
-    print('U: See current Users: ')
-    print('A: Add user:')
+    print('U. See current Users: ')
+    print('A. Add user:')
+    print('D. Delete user:')
     print('')
     choice = input("Enter command: ").lower()
     if choice == 'x':
@@ -90,12 +116,13 @@ def Users():
     elif choice == 'r':
         Menu()
     elif choice == 'u':
-        print("")
-        for i in range(len(server_data["users"])):
-            print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+        ShowUsers()
         Users()
     elif choice == 'a':
         AddUsers()
+        Users()
+    elif choice == 'd':
+        DeleteUsers()
         Users()
 def Channels():
     print("")
@@ -110,20 +137,17 @@ def Channels():
         print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
     print('')
     choice = input("Enter command: ").lower()
+    print()
 
     if choice == 'a':
         AddChannel()
         Channels()
     elif choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
-        print("List of messages:")
-        print("")
-        for j in range(len(server_data['messages'])):
-            if str(server_data['messages'][j]['channel']) == choice:
-                print(server_data['messages'][j]['reception_date'],'. ', server_data['messages'][j]['content'])
-        Channels
+        ShowMess(choice)
+        Channels()
     elif choice == "u":
         ChannelAddUsers()
-        Channels
+        Channels()
     elif choice == 'x':
         return
     elif choice == 'r':

@@ -11,6 +11,10 @@
         {
             "name": "Perceval",
             "id": 85
+        },
+        {
+            "name": "Baptiste",
+            "id": 31
         }
     ],
     "channels": [
@@ -20,6 +24,14 @@
             "member_ids": [
                 41,
                 23
+            ]
+        },
+        {
+            "name": "Ap Python 1",
+            "id": 25,
+            "member_ids": [
+                "85",
+                "31"
             ]
         }
     ],
