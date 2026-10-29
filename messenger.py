@@ -25,8 +25,8 @@ def power10(n):
         n = n//10
         c+=1
     return c
-def UserId():
-    current_ids = [member["id"] for member in server_data["users"]]
+def UserId(List):
+    current_ids = [member["id"] for member in List]
     if not current_ids:
         return 0
     max_id = max(current_ids)
@@ -69,20 +69,30 @@ def Users():
     elif choice == 'u':
         for i in range(len(server_data["users"])):
             print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+        print("-------------")
     elif choice == 'a':
         name = input("Enter a name:")
-        id = UserId()
+        id = UserId(server_data['users'])
         server_data['users']+= [{'name' : name, 'id' : id}]
+        print("You added ",id,". ", name, ' successfully.')
+        print("----------")
     Users()
 def Channels():
     print("CHANNEL MENU:")
     print("ENTER CHANNEL ID TO SEE MESSAGES:")
     print('X. Leave')
+    print("A. Add channel")
     for i in range(len(server_data["channels"])):
         print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
     choice = input("Enter command: ").lower()
     print("\n")
-    if choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
+    if choice == 'a':
+        name = input("Enter a name:")
+        id = UserId(server_data['channels'])
+        server_data['channels']+= [{'name' : name, 'id' : id, "member_ids": []}]
+        print("You added ",id,". ", name, ' successfully.')
+        print("----------")
+    elif choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
         print("LIST OF MESSAGES:")
         for j in range(len(server_data['messages'])):
             if str(server_data['messages'][j]['channel']) == choice:
