@@ -25,7 +25,7 @@ def power10(n):
         n = n//10
         c+=1
     return c
-def UserId(List):
+def Id(List):
     current_ids = [member["id"] for member in List]
     if not current_ids:
         return 0
@@ -40,6 +40,22 @@ def UserId(List):
         end = start + 100
         possible_ids = [x for x in range(start, end) if x not in current_ids]
     return random.choice(possible_ids)
+def findIndexById(List, Id):
+    c = 0
+    for i in range(len(List)):
+        if List[i]['id'] != Id:
+            c+=1
+        else: return c
+
+def ChannelAddUsers():
+    choice = input('Choose channel id: ')
+    if choice in [str(server_data["channels"][p]['id']) for p in range(len(server_data["channels"]))]:
+        for i in range(len(server_data["users"])):
+            print(server_data['users'][i]['id'], '. ',server_data['users'][i]['name'])
+        User = input("Choose User Ids (only separated by commas): ")
+        User = User.split(',')
+        server_data['channels'][findIndexById(server_data['channels'], int(choice))]['member_ids'] += User
+        
 def Menu():
     print('MENU:')
     print('X. Leave')
@@ -72,7 +88,7 @@ def Users():
         print("-------------")
     elif choice == 'a':
         name = input("Enter a name:")
-        id = UserId(server_data['users'])
+        id = Id(server_data['users'])
         server_data['users']+= [{'name' : name, 'id' : id}]
         print("You added ",id,". ", name, ' successfully.')
         print("----------")
@@ -82,13 +98,14 @@ def Channels():
     print("ENTER CHANNEL ID TO SEE MESSAGES:")
     print('X. Leave')
     print("A. Add channel")
+    print("U. Add users in channel")
     for i in range(len(server_data["channels"])):
         print(server_data["channels"][i]['id'],'. groupe: ',server_data['channels'][i]['name'])
     choice = input("Enter command: ").lower()
     print("\n")
     if choice == 'a':
         name = input("Enter a name:")
-        id = UserId(server_data['channels'])
+        id = Id(server_data['channels'])
         server_data['channels']+= [{'name' : name, 'id' : id, "member_ids": []}]
         print("You added ",id,". ", name, ' successfully.')
         print("----------")
@@ -98,6 +115,8 @@ def Channels():
             if str(server_data['messages'][j]['channel']) == choice:
                 print(server_data['messages'][j]['reception_date'],'. ', server_data['messages'][j]['content'])
         print("---------")
+    elif choice == "u":
+        ChannelAddUsers()
     elif choice == 'x':
         return
     else:
